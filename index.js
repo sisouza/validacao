@@ -2,9 +2,7 @@ const express = require("express")
 const bodyParser = require("body-parser")
 const session = require("express-session")
 const app = express()
-const session = require("express-session")
 const flash = require("express-flash")
-const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 
 app.set('view engine','ejs')
@@ -28,7 +26,19 @@ app.use(session({
 app.use(flash())
 
 app.get("/",(req,res) =>{
-    res.render("index")
+
+
+    //acessing flash sessions
+    let emailError = req.flash("emailError")
+    let pontosError = req.flash("pontosError")
+    let nameError = req.flash("nameError")
+    let email = req.flash("email")
+
+    //avoiding empty errors on the screen
+    emailError = (emailError == undefined || emailError.lenght == 0) ? undefined : emailError
+    email = (email== undefined || email.lenght == 0) ? undefined : email
+
+    res.render("index",{emailError,pontosError,nameError,email:email})
 })
 
 //form router
@@ -59,6 +69,13 @@ app.post("/form",(req,res) =>{
 
     //checking errors 
     if(emailError != undefined || pontosError != undefined || nameError != undefined   ){
+        
+        //setting flash sessions for errors
+        req.flash("emailError",emailError)
+        req.flash("pontosError",pontosError)
+        req.flash("nameError",nameError)
+        req.flash("email",email)
+
         res.redirect("/")
     }else{
         res.send("Formulario okay")

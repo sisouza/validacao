@@ -7,9 +7,12 @@
 </head>
 <body>
     <form method="POST" action="/form">
-        <input type="email" name="email" id="email" placeholder="Email">
+        <input type="email" name="email" id="email" placeholder="Email" value="<%= email %>"><br>
+        <%= emailError %><br>
         <input type="text" name="name" id="name" placeholder="Nome">
+        <%= nameError %><br>
         <input type="number" name="number" id="number" placeholder="Pontos">
+        <%= pontosError %><br>
         <button type="submit">Enviar</button>
     </form>
 </body>
